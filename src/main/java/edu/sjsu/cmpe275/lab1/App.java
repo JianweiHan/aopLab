@@ -19,20 +19,20 @@ public class App {
 
         ArrayList<ArrayList<String>> inputTweet = new ArrayList<ArrayList<String>>();
         
-        inputTweet.add(new ArrayList<String>(Arrays.asList("alex", "1234567890")));
-        inputTweet.add(new ArrayList<String>(Arrays.asList("alex", "1234567890")));
-        inputTweet.add(new ArrayList<String>(Arrays.asList("alex", "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890")));
-        inputTweet.add(new ArrayList<String>(Arrays.asList("alex", "1234567890")));
-        inputTweet.add(new ArrayList<String>(Arrays.asList("alex", "1234567890")));
-        inputTweet.add(new ArrayList<String>(Arrays.asList("alex", "1234567890")));
+        inputTweet.add(new ArrayList<String>(Arrays.asList("alex", "This is my first tweet!")));
+        inputTweet.add(new ArrayList<String>(Arrays.asList("alex", "This is my second tweet")));
+        inputTweet.add(new ArrayList<String>(Arrays.asList("bob", "+01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789")));
+        inputTweet.add(new ArrayList<String>(Arrays.asList("bob", "Hello world!")));
+        inputTweet.add(new ArrayList<String>(Arrays.asList("bob", "This is great!")));
+        inputTweet.add(new ArrayList<String>(Arrays.asList("pippen", "Let's play!")));
         
         ArrayList<ArrayList<String>> inputFollow = new ArrayList<ArrayList<String>>();
-        inputFollow.add(new ArrayList<String>(Arrays.asList("alex", "1234567890")));
-        inputFollow.add(new ArrayList<String>(Arrays.asList("alex", "1234567890")));
-        inputFollow.add(new ArrayList<String>(Arrays.asList("alex", "1234567890")));
-        inputFollow.add(new ArrayList<String>(Arrays.asList("alex", "1234567890")));
-        inputFollow.add(new ArrayList<String>(Arrays.asList("alex", "abc")));
-        inputFollow.add(new ArrayList<String>(Arrays.asList("alexf", "abc")));
+        inputFollow.add(new ArrayList<String>(Arrays.asList("abc", "a")));
+        inputFollow.add(new ArrayList<String>(Arrays.asList("alex", "alex")));
+        inputFollow.add(new ArrayList<String>(Arrays.asList("bob", "abc")));
+        inputFollow.add(new ArrayList<String>(Arrays.asList("bob", "alex")));
+        inputFollow.add(new ArrayList<String>(Arrays.asList("pippen", "a")));
+        inputFollow.add(new ArrayList<String>(Arrays.asList("jordan", "abc")));
         
         for(int i = 0; i < 6; i ++) {
             try {
@@ -46,7 +46,7 @@ public class App {
             }
         }
 
-
+        //tweetStats.resetStats();
         System.out.println("Most productive user: " + tweetStats.getMostProductiveUser());
         System.out.println("Most followed user: " + tweetStats.getMostFollowedUser());
         System.out.println("Length of the longest tweet: " + tweetStats.getLengthOfLongestTweetAttempted());

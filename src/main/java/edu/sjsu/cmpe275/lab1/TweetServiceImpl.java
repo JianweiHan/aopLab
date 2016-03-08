@@ -12,16 +12,18 @@ public class TweetServiceImpl implements TweetService {
     public void tweet(String user, String message) throws IllegalArgumentException, IOException {
     		//if message is longer than 140, throw IllegalArgumentException
     		System.out.println("tweet__________" + user + "  " + message + "___________");
+    		
     		if(message.length() > 140) {
     			throw new IllegalArgumentException();
     		}
-    		
-    		//if(RetryAndDoStats.countTry == 1) {
-    		//	return;
-    		//}
+    		/*
+    		if(RetryAndDoStats.countTry == 1) {
+    			return;
+    		}
+    		*/
     		
     		if(false) {
-    			throw new IOException();
+    			throw new IOException("There is network failure for tweet.");
     		}
     }
 
@@ -30,8 +32,9 @@ public class TweetServiceImpl implements TweetService {
     		//if(RetryAndDoStats.countTry == 2) {
     		//	return;
     		//}
-    		if(true) {
-			throw new IOException();
+    		
+    		if(false) {
+			throw new IOException("There is network failure for follow.");
 		}
     }
 

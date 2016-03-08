@@ -11,10 +11,7 @@ import org.aopalliance.intercept.MethodInvocation;
 
 
 public class RetryAndDoStats implements MethodInterceptor {
-    /***
-     * Following is the dummy implementation of advice.
-     * Students are expected to complete the required implementation as part of lab completion.
-     */
+
 	//statistic fields, used to record data
 	public int countTry = 0;
 	public boolean isReTry = false;
@@ -24,20 +21,13 @@ public class RetryAndDoStats implements MethodInterceptor {
 	
 	
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        System.out.println("Method " + invocation.getMethod() + " is called");
-        //return invocation.proceed();
-        System.out.println("Method name :" + invocation.getMethod().getName());
-        //System.out.println("Method arguments :" + Arrays.toString(invocation.getArguments()));
-       // System.out.println("Method arguments :" + invocation.getArguments()[0]);
-       // System.out.println("Method arguments :" + invocation.getArguments()[1]);
-        
-        
-        
+                     
+        //get method's information. For example, name(e.g. tweet or follow), and arguments
         String methodName = invocation.getMethod().getName();
         String argFirst = (String) invocation.getArguments()[0];
         String argSecond = (String) invocation.getArguments()[1];
-        //System.out.println("Method arguments :" + argFirst + "   "+ argSecond);
-        //update longestTweetAttempted
+
+        //update longest attempt if message length is longer than previous ones
         if(methodName.equals("tweet")) {
         		if(argSecond.length() > longestAttempt) {
         			longestAttempt = argSecond.length();
@@ -46,19 +36,11 @@ public class RetryAndDoStats implements MethodInterceptor {
         
         Object result = null;
         
+        //try to proceed the tweet or follow method, for max 3 times retry
         while(countTry == 0 || (isReTry && countTry <= 3)) {
-        		if(countTry > 0) {
-        			System.out.println("We are trying to re-" + methodName + ".");
-        		}
         		doProcess(result, invocation, methodName, argFirst, argSecond);
         		countTry++;
-        }
-        
-        if(isReTry) {
-            isReTry = false;
-            countTry = 0;
-        		throw new IOException();
-        }
+        }        
         
         isReTry = false;
         countTry = 0;
@@ -66,11 +48,12 @@ public class RetryAndDoStats implements MethodInterceptor {
         return result;
     }
     
+    // try to proceed the method, or catch the IOException and IllegalArgumentException exception 
     private void doProcess(Object result, MethodInvocation invocation, String methodName, String argFirst, String argSecond) throws Throwable {
         try {
     			result = invocation.proceed();
-    			//System.out.println("This is after return aop.");
     			
+    			// if method is follow, update mostFollowMap, in which key is followee and value is follower list.
     			if(methodName.equals("follow")) {
     				if(!argFirst.equals(argSecond)) {
     					if(!mostFollowMap.containsKey(argSecond)) {
@@ -80,27 +63,26 @@ public class RetryAndDoStats implements MethodInterceptor {
     				}    				
     			}
     			
+    			//if method is tweet, update mostProduceMap, in which key is user and value is the total successful messages length.
     			if(methodName.equals("tweet")) {
     				if(!mostProduceMap.containsKey(argFirst)) {
     					mostProduceMap.put(argFirst, 0);
     				}
     				mostProduceMap.put(argFirst, mostProduceMap.get(argFirst) + argSecond.length());
     			}
-    			isReTry = false;
-    			//while(countTry <= 3) {
-    				//countTry++;
-    				//result = invocation.proceed();
-    				//System.out.println("This is after return aop.");
-    				//TweetService tweeter = (TweetService) invocation.getThis();
-    				//tweeter.tweet("alex", "first tweet");
-    			//}   
+    			isReTry = false;  
         }
         catch(IOException e) {
-    			//System.out.println("This is an IOException for " + methodName + " method.");
     			isReTry = true;
+    			
+    			 // if have retried 3 times throw IOExcepton
+    			if(countTry == 3) {
+        		    isReTry = false;
+                countTry = 0;
+                throw e;
+    			}
         }
         catch(IllegalArgumentException e) {
-    			//System.out.println("This is an IllegalArgumentException for tweet method. More than 140 characters");
             isReTry = false;
             countTry = 0;
     			throw e;
